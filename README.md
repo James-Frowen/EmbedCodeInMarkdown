@@ -7,7 +7,7 @@ This program allows you to embed code from external files into your markdown fil
 To embed a block of code from an external file into your markdown file, you need to add a special comment in the following format:
 
 ```
-{{{ Path:'path/to/code' Name:'block-name' }}}
+{{{ Path:'path/to/code.cs' Name:'block-name' }}}
 ```
 
 This comment specifies the path to the code file and the name of the code block that you want to embed.
@@ -27,7 +27,7 @@ The `block-name` in the `CodeEmbed-Start` and `CodeEmbed-End` comments should ma
 To run the program, you need to pass in the path to the markdown file and the path to the directory containing your code files as command-line arguments. Here's an example:
 
 ```sh
-dotnet run – -docs=path/to/markdown/directory -code=path/to/code/directory
+EmbedCodeInMarkdown.exe -docs="Test/markdown/" -code="Test/code/" -out="TestOut/"
 ```
 
 This will modify the markdown file by replacing all special comments with the corresponding blocks of code from the specified code files.
