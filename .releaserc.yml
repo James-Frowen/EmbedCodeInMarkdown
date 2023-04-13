@@ -1,0 +1,22 @@
+plugins:
+  - '@semantic-release/release-notes-generator'
+  - '@semantic-release/commit-analyzer'
+  - - '@semantic-release/exec'
+    - prepareCmd: "sed -i -e '/AssemblyVersion/s/\".*\"/\"${nextRelease.version}\"/' 
+        EmbedCodeInMarkdown/AssemblyInfo.cs"
+  - - '@semantic-release/changelog'
+    - changelogFile: 'CHANGELOG.md'
+  - - '@semantic-release/exec'
+    - prepareCmd: "dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o out/win-x64 EmbedCodeInMarkdown/EmbedCodeInMarkdown.csproj"
+  - - '@semantic-release/exec'
+    - prepareCmd: "dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o out/linux-x64 EmbedCodeInMarkdown/EmbedCodeInMarkdown.csproj"
+  - - "@semantic-release/github"
+    - assets:
+      - path: "out/win-x64/EmbedCodeInMarkdown.exe"
+        label: "EmbedCodeInMarkdown-win-x64.exe"
+      - path: "out/linux-x64/EmbedCodeInMarkdown"
+        label: "EmbedCodeInMarkdown-linux-x64"
+  - - '@semantic-release/git'
+    - assets:
+        - 'EmbedCodeInMarkdown/AssemblyInfo.cs'
+        - 'CHANGELOG.md'
