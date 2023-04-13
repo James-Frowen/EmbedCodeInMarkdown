@@ -22,10 +22,10 @@ namespace EmbedCode
             FileContents = File.ReadAllText(Path);
             CodeBlocks = new Dictionary<string, CodeBlock>();
 
-            Regex startRegex = new Regex(@"// CodeEmbed-Start: (?<name>[^\r]+)");
+            Regex startRegex = new Regex(@"// CodeEmbed-Start: (?<name>.+)");
             MatchCollection startMatches = startRegex.Matches(FileContents);
 
-            Regex endRegex = new Regex(@"// CodeEmbed-End: (?<name>[^\r]+)");
+            Regex endRegex = new Regex(@"// CodeEmbed-End: (?<name>.+)");
             MatchCollection endMatches = endRegex.Matches(FileContents);
 
             foreach (Match startMatch in startMatches)
@@ -39,6 +39,9 @@ namespace EmbedCode
                     {
                         int startIndex = FileContents.IndexOf(Environment.NewLine, startMatch.Index) + 2;
                         int endIndex = FileContents.LastIndexOf(Environment.NewLine, endMatch.Index);
+
+                        if (name.EndsWith("\r"))
+                            name = name.Substring(0, name.Length - 1);
 
                         CodeBlock codeBlock = new CodeBlock
                         {
