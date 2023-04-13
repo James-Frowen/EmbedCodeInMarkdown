@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace ConsoleApp
+namespace EmbedCode
 {
     internal class CodeFile
     {

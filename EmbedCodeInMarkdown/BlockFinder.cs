@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace ConsoleApp
+namespace EmbedCode
 {
     internal static class BlockFinder
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace ConsoleApp
+namespace EmbedCode
 {
     internal class FileModifier
     {

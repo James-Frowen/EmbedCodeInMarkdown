@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace ConsoleApp
+namespace EmbedCode
 {
     internal class CodeFileFinder
     {

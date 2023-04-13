@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp
+﻿namespace EmbedCode
 {
     internal struct MarkdownBlock
     {
