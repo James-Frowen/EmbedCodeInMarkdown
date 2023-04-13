@@ -6,7 +6,7 @@ namespace ConsoleApp
 {
     internal static class FileModifier
     {
-        public static void ModifyFile(string filePath, CodeFileFinder codeFinder)
+        public static void ModifyFile(string filePath, string fromRoot, string outputRoot, CodeFileFinder codeFinder)
         {
             string fileContents = File.ReadAllText(filePath);
             StringBuilder sb = new StringBuilder(fileContents);
@@ -20,8 +20,19 @@ namespace ConsoleApp
             }
 
             // Save the modified file contents
-            File.WriteAllText(filePath, sb.ToString());
+            string outPath = OutFilePath(filePath, fromRoot, outputRoot);
+            File.WriteAllText(outPath, sb.ToString());
         }
+
+        private static string OutFilePath(string fullPath, string fromRoot, string outputRoot)
+        {
+            if (string.IsNullOrEmpty(outputRoot))
+                return fullPath;
+
+            string filePath = Path.GetRelativePath(fromRoot, fullPath);
+            return Path.Combine(outputRoot, filePath);
+        }
+
 
         private static void ReplaceBlockWithCodeResult(StringBuilder sb, MarkdownBlock block, CodeFileFinder codeFinder)
         {

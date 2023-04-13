@@ -21,26 +21,30 @@ namespace ConsoleApp
                 {
                     codePath = arg.Substring(6);
                 }
+                else if (arg.StartsWith("-out="))
+                {
+                    codePath = arg.Substring(6);
+                }
             }
 
-            if (docsPath == "" || codePath == "" || outputPath == "")
+            if (docsPath == "" || codePath == "")
             {
-                Console.WriteLine("Usage: ConsoleApp.exe -docs=\"path/to/folder\" -code=\"path/to/folder\"");
+                Console.WriteLine("Usage: ConsoleApp.exe -docs=\"path/to/folder\" -code=\"path/to/folder\" -out=\"path/to/folder\"");
                 return;
             }
 
             // Your code here
             CodeFileFinder codeFinder = new CodeFileFinder();
             _ = codeFinder.FindCodeFiles(codePath);
-            ProcessDocs(docsPath, codeFinder);
+            ProcessDocs(docsPath, outputPath, codeFinder);
         }
 
-        private static void ProcessDocs(string docsRoot, CodeFileFinder codeFinder)
+        private static void ProcessDocs(string docsRoot, string outputPath, CodeFileFinder codeFinder)
         {
             string[] allMarkdown = Directory.GetFiles(docsRoot, "*.md", SearchOption.AllDirectories);
             foreach (string markdown in allMarkdown)
             {
-                FileModifier.ModifyFile(markdown, codeFinder);
+                FileModifier.ModifyFile(markdown, docsRoot, outputPath, codeFinder);
             }
         }
     }
