@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ConsoleApp
@@ -6,22 +7,36 @@ namespace ConsoleApp
     internal class CodeFileFinder
     {
         private Dictionary<string, CodeFile> fileContentsCache = new Dictionary<string, CodeFile>();
+        private string _codeRoot;
 
         public string[] FindCodeFiles(string directoryPath)
         {
-            return Directory.GetFiles(directoryPath, "*.cs", SearchOption.AllDirectories);
+            _codeRoot = directoryPath;
+
+            string[] codeFiles = Directory.GetFiles(directoryPath, "*.cs", SearchOption.AllDirectories);
+
+            foreach (string codeFile in codeFiles)
+            {
+                fileContentsCache[codeFile] = new CodeFile { Path = codeFile };
+            }
+
+            return codeFiles;
         }
 
         public CodeFile GetCodeFile(string filePath)
         {
-            if (!fileContentsCache.ContainsKey(filePath))
+            if (!Path.IsPathFullyQualified(filePath))
             {
-                CodeFile codeFile = new CodeFile { Path = filePath };
-                codeFile.Load();
-                fileContentsCache[filePath] = codeFile;
+                filePath = Path.Combine(_codeRoot, filePath);
             }
 
-            return fileContentsCache[filePath];
+            if (!fileContentsCache.TryGetValue(filePath, out CodeFile codeFile))
+            {
+                throw new ArgumentException($"File path not found {filePath}");
+            }
+
+            codeFile.Load();
+            return codeFile;
         }
     }
 }

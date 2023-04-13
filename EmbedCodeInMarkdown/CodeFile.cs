@@ -8,18 +8,24 @@ namespace ConsoleApp
     internal class CodeFile
     {
         public string Path { get; set; }
+        public bool HasLoaded { get; private set; }
         public string FileContents { get; private set; }
         public Dictionary<string, CodeBlock> CodeBlocks { get; private set; }
 
         public void Load()
         {
+            if (HasLoaded)
+                return;
+
+            HasLoaded = true;
+
             FileContents = File.ReadAllText(Path);
             CodeBlocks = new Dictionary<string, CodeBlock>();
 
-            Regex startRegex = new Regex(@"// CodeEmbed-Start: (?<name>.+)");
+            Regex startRegex = new Regex(@"// CodeEmbed-Start: (?<name>[^\r]+)");
             MatchCollection startMatches = startRegex.Matches(FileContents);
 
-            Regex endRegex = new Regex(@"// CodeEmbed-End: (?<name>.+)");
+            Regex endRegex = new Regex(@"// CodeEmbed-End: (?<name>[^\r]+)");
             MatchCollection endMatches = endRegex.Matches(FileContents);
 
             foreach (Match startMatch in startMatches)
@@ -31,14 +37,18 @@ namespace ConsoleApp
                 {
                     if (endMatch.Groups["name"].Value == name)
                     {
-                        int startIndex = FileContents.IndexOf('\n', startMatch.Index) + 1;
-                        int endIndex = FileContents.LastIndexOf('\n', endMatch.Index);
+                        int startIndex = FileContents.IndexOf(Environment.NewLine, startMatch.Index) + 2;
+                        int endIndex = FileContents.LastIndexOf(Environment.NewLine, endMatch.Index);
 
                         CodeBlock codeBlock = new CodeBlock
                         {
+                            Name = name,
                             StartIndex = startIndex,
                             EndIndex = endIndex
                         };
+
+                        //LogCodeBlock(name, codeBlock);
+
 
                         CodeBlocks[name] = codeBlock;
                         endFound = true;
@@ -51,6 +61,30 @@ namespace ConsoleApp
                     throw new Exception($"End comment not found for start comment with name '{name}'");
                 }
             }
+        }
+
+        private void LogCodeBlock(string name, CodeBlock codeBlock)
+        {
+            string codeText = GetCode(codeBlock);
+            string[] lines = codeText.Split(Environment.NewLine);
+
+            Console.WriteLine($"---start-{name}---");
+            foreach (string line in lines)
+                Console.WriteLine(line);
+
+            Console.WriteLine($"---end-{name}---");
+        }
+
+        public string GetCode(CodeBlock block)
+        {
+            int count = block.EndIndex - block.StartIndex;
+            if (count <= 0)
+            {
+                Console.WriteLine($"WARNING: empty code block. File:{Path} BlockName:{block.Name}");
+                return string.Empty;
+            }
+
+            return FileContents.Substring(block.StartIndex, count);
         }
     }
 }

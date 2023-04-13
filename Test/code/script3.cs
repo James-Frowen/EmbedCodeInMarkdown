@@ -1,5 +1,7 @@
 // This is the second script file
 
+// empty lines before end of block
+
 // CodeEmbed-Start: block1
 using System;
 
@@ -10,9 +12,14 @@ namespace Example {
         }
     }
 }
+
+
 // CodeEmbed-End: block1
 
+// empty lines before start of block
 // CodeEmbed-Start: block2
+
+
 using System;
 
 namespace Example {

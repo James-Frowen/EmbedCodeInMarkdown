@@ -23,28 +23,55 @@ namespace ConsoleApp
                 }
                 else if (arg.StartsWith("-out="))
                 {
-                    codePath = arg.Substring(6);
+                    outputPath = arg.Substring(5);
                 }
             }
 
-            if (docsPath == "" || codePath == "")
+            if (docsPath == "")
             {
-                Console.WriteLine("Usage: ConsoleApp.exe -docs=\"path/to/folder\" -code=\"path/to/folder\" -out=\"path/to/folder\"");
+                Console.WriteLine("No -docs=");
+                logUsage();
                 return;
             }
+            if (codePath == "")
+            {
+                Console.WriteLine("No -code=");
+                logUsage();
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(outputPath))
+            {
+                if (!Directory.Exists(outputPath))
+                    Directory.CreateDirectory(outputPath);
+            }
+
 
             // Your code here
             CodeFileFinder codeFinder = new CodeFileFinder();
             _ = codeFinder.FindCodeFiles(codePath);
-            ProcessDocs(docsPath, outputPath, codeFinder);
+
+            FileModifier fileModifier = new FileModifier();
+            ProcessDocs(fileModifier, docsPath, outputPath, codeFinder);
+
+            if (fileModifier.Fail)
+            {
+                Environment.Exit(1);
+            }
         }
 
-        private static void ProcessDocs(string docsRoot, string outputPath, CodeFileFinder codeFinder)
+        private static void logUsage()
+        {
+            Console.WriteLine("Usage: EmbedCodeInMarkdown.exe -docs=\"path/to/folder\" -code=\"path/to/folder\" -out=\"path/to/folder\"");
+        }
+
+        private static void ProcessDocs(FileModifier fileModifier, string docsRoot, string outputPath, CodeFileFinder codeFinder)
         {
             string[] allMarkdown = Directory.GetFiles(docsRoot, "*.md", SearchOption.AllDirectories);
+
             foreach (string markdown in allMarkdown)
             {
-                FileModifier.ModifyFile(markdown, docsRoot, outputPath, codeFinder);
+                fileModifier.ModifyFile(markdown, docsRoot, outputPath, codeFinder);
             }
         }
     }
