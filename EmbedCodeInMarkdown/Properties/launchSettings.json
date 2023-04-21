@@ -2,8 +2,8 @@
   "profiles": {
     "EmbedCodeInMarkdown": {
       "commandName": "Project",
-      "commandLineArgs": "-docs=\"Test/markdown/\" -code=\"Test/code/\" -out=\"TestOut/\"",
-      "workingDirectory": "G:\\repos_fast\\EmbedCodeInMarkdown"
+      "commandLineArgs": "-docs=\"doc/docs/\" -code=\"Assets/Mirage/Samples~/\"",
+      "workingDirectory": "G:\\UnityProjects\\Mirage"
     }
   }
 }

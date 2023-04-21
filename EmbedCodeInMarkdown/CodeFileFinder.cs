@@ -9,7 +9,7 @@ namespace EmbedCode
         private Dictionary<string, CodeFile> fileContentsCache = new Dictionary<string, CodeFile>();
         private string _codeRoot;
 
-        public string[] FindCodeFiles(string directoryPath)
+        public void FindCodeFiles(string directoryPath)
         {
             _codeRoot = directoryPath;
 
@@ -17,10 +17,9 @@ namespace EmbedCode
 
             foreach (string codeFile in codeFiles)
             {
-                fileContentsCache[codeFile] = new CodeFile { Path = codeFile };
+                string normalizedPath = Path.GetFullPath(codeFile);
+                fileContentsCache[normalizedPath] = new CodeFile { Path = normalizedPath };
             }
-
-            return codeFiles;
         }
 
         public CodeFile GetCodeFile(string filePath)
@@ -30,9 +29,12 @@ namespace EmbedCode
                 filePath = Path.Combine(_codeRoot, filePath);
             }
 
-            if (!fileContentsCache.TryGetValue(filePath, out CodeFile codeFile))
+            string normalizedPath = Path.GetFullPath(filePath);
+
+
+            if (!fileContentsCache.TryGetValue(normalizedPath, out CodeFile codeFile))
             {
-                throw new ArgumentException($"File path not found {filePath}");
+                throw new ArgumentException($"File path not found {normalizedPath}");
             }
 
             codeFile.Load();

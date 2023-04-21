@@ -49,7 +49,7 @@ namespace EmbedCode
 
             // Your code here
             CodeFileFinder codeFinder = new CodeFileFinder();
-            _ = codeFinder.FindCodeFiles(codePath);
+            codeFinder.FindCodeFiles(codePath);
 
             FileModifier fileModifier = new FileModifier();
             ProcessDocs(fileModifier, docsPath, outputPath, codeFinder);
