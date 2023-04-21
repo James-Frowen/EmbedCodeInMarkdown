@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/James-Frowen/EmbedCodeInMarkdown/compare/v1.0.1...v1.0.2) (2023-04-21)
+
+
+### Bug Fixes
+
+* fixing paths on windows ([6a289cd](https://github.com/James-Frowen/EmbedCodeInMarkdown/commit/6a289cdbbd6d45a913952384c7fa1b8c3d97b6e7))
+
 ## [1.0.1](https://github.com/James-Frowen/EmbedCodeInMarkdown/compare/v1.0.0...v1.0.1) (2023-04-13)
 
 
