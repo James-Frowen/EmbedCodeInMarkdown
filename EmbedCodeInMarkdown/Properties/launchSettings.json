@@ -2,7 +2,7 @@
   "profiles": {
     "EmbedCodeInMarkdown": {
       "commandName": "Project",
-      "commandLineArgs": "-docs=\"doc/docs/\" -code=\"Assets/Mirage/Samples~/\"",
+      "commandLineArgs": "-docs=\"doc/docs/\" -out=\"doc/docs-out/\" -code=\"Assets/Mirage/Samples~/\"",
       "workingDirectory": "G:\\UnityProjects\\Mirage"
     }
   }
