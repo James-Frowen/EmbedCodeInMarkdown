@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -75,7 +75,8 @@ namespace EmbedCode
         {
             // Remove extra indentation
             string[] lines = code.Split(Environment.NewLine);
-            RemoveIdenation(lines);
+            lines = RemoveEmbedComments(lines);
+            RemoveIndentation(lines);
 
             GetStartEnd(lines, out int start, out int end);
             if (start > end)// no valid lines
@@ -91,6 +92,20 @@ namespace EmbedCode
             return codeResult;
         }
 
+        private static string[] RemoveEmbedComments(string[] lines)
+        {
+            List<string> newLines = new List<string>();
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string trimmed = lines[i].Trim();
+                if (!trimmed.StartsWith("// CodeEmbed-"))
+                {
+                    newLines.Add(lines[i]);
+                }
+            }
+
+            return newLines.ToArray();
+        }
 
         private static string AddMarkdownCodeBlock(string codeResult)
         {
@@ -98,7 +113,7 @@ namespace EmbedCode
             return codeResult;
         }
 
-        private static void RemoveIdenation(string[] lines)
+        private static void RemoveIndentation(string[] lines)
         {
             int minIndent = int.MaxValue;
 
