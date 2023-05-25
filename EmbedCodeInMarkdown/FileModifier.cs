@@ -35,6 +35,9 @@ namespace EmbedCode
 
             // Save the modified file contents
             string outPath = OutFilePath(filePath, fromRoot, outputRoot);
+            string outDir = Path.GetDirectoryName(outPath);
+            if (!Directory.Exists(outDir))
+                Directory.CreateDirectory(outDir);
             File.WriteAllText(outPath, sb.ToString());
         }
 
