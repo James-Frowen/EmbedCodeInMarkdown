@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -12,6 +12,10 @@ namespace EmbedCode
         {
             string fileContents = File.ReadAllText(filePath);
             List<MarkdownBlock> blocks = BlockFinder.FindBlocks(fileContents);
+
+            // skip writing if there are no code blocks
+            if (blocks.Count == 0)
+                return;
 
             StringBuilder sb = new StringBuilder();
             int currentIndex = 0;
