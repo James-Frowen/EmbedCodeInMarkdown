@@ -1,3 +1,11 @@
+## [1.0.3](https://github.com/James-Frowen/EmbedCodeInMarkdown/compare/v1.0.2...v1.0.3) (2023-05-25)
+
+
+### Bug Fixes
+
+* checking out directory exists ([5b48a86](https://github.com/James-Frowen/EmbedCodeInMarkdown/commit/5b48a86120a70cd0fad2d0ff0a7b682f07e82948))
+* removing nested CodeEmbed comments from output ([0dfe126](https://github.com/James-Frowen/EmbedCodeInMarkdown/commit/0dfe1269960d73fcdd9f61a6245083d834ea1b8a))
+
 ## [1.0.2](https://github.com/James-Frowen/EmbedCodeInMarkdown/compare/v1.0.1...v1.0.2) (2023-04-21)
 
 
